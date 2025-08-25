@@ -3,62 +3,35 @@
 #include <vector>
 using namespace std;
 
-char setVal(char left, char up, char old)
-{
-    unordered_set<char> chars = {'A', 'B', 'C', 'D'};
-
-    chars.erase(left);
-    chars.erase(up);
-    chars.erase(old); 
-
-    return *chars.begin();
-}
-
 int main() 
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int rowLength, colLength;
-    cin >> rowLength >> colLength;
+    int row, col;
+    cin >> row >> col;
 
-    vector<vector<char>> grid(rowLength, vector<char>(colLength));
-
-    string row;
-    for (int i = 0; i < rowLength; i++)
+    vector<string> grid(row);
+    for (int i = 0; i < row; i++)
     {
-        cin >> row;
-        for (int j = 0; j < colLength; j++)
-            grid[i][j] = row[j];
+        cin >> grid[i];
     }
 
-    for (int i = 0; i < rowLength; i++)
+    for (int i = 0; i < row; i++)
     {
-        for (int j = 0; j < colLength; j++)
+        for (int j = 0; j < col; j++)
         {
-            if (i == 0 && j ==0)
+            for (int k = 'A'; k <= 'D'; k++)
             {
-                grid[i][j] = setVal(0, 0, grid[i][j]);
-            }
-            else if (i == 0)
-            {
-                grid[i][j] = setVal(grid[i][j-1], 0, grid[i][j]);
-            }
-            else if (j == 0)
-            {
-                grid[i][j] = setVal(0, grid[i-1][j], grid[i][j]);
-            }
-            else
-            {
-                grid[i][j] = setVal(grid[i][j-1], grid[i-1][j], grid[i][j]);
-            }
-        }
-    }
+                if (grid[i][j] == k) continue; //old
+                if (i > 0 && grid[i-1][j] == k) continue; //up
+                if (j > 0 && grid[i][j-1] == k) continue; //left
 
-    for (int i = 0; i < rowLength; i++)
-    {
-        for (int j = 0; j < colLength; j++)
+                grid[i][j] = k;
+                break;
+            }
             cout << grid[i][j];
+        }
         cout << "\n";
     }
 }
